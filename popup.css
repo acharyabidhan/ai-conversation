@@ -9,6 +9,9 @@ body {
     height: 400px;
     background-color: rgb(20, 50, 80);
     padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 }
 
 textarea {
@@ -23,6 +26,7 @@ button {
     width: 100%;
 }
 
-p {
-    color: lightgreen;
+#message_list {
+    flex: 1;
+    overflow-y: auto;
 }
