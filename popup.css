@@ -26,6 +26,10 @@ button {
     width: 100%;
 }
 
+p {
+    border-bottom: 1px solid rgb(40, 70, 100);
+}
+
 #message_list {
     flex: 1;
     overflow-y: auto;

@@ -12,7 +12,7 @@ function addMessageToList(msg, error) {
 function sendDataToContent(action, data) {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const tabId = tabs[0]?.id;
-        if (!tabId) return console.error("No active tab found");
+        if (!tabId) return addMessageToList("No active tab found", true);
         chrome.tabs.sendMessage(tabId, { action: action, data: data }, (response) => {
             if (chrome.runtime.lastError)
                 addMessageToList(chrome.runtime.lastError.message, true);
@@ -21,7 +21,6 @@ function sendDataToContent(action, data) {
         });
     });
 }
-
 
 document.getElementById("send_prompt").addEventListener("click", () => {
     addMessageToList("Prompt sent!", false);

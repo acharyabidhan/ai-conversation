@@ -32,17 +32,17 @@ function insertPrompt(prompt) {
 }
 
 function waitFor(sec) {
-    return new Promise((res, rej) => { setTimeout(res, sec); });
+    return new Promise((res, rej) => { setTimeout(res, sec * 1000); });
 }
 
 async function sendPrompt() {
     const btn = document.querySelector("button[data-testid='send-button']");
     btn.click();
-    await waitFor(2);
+    await waitFor(1);
     while (document.querySelector("button[data-testid='stop-button']") !== null) {
-        await waitFor(2);
+        await waitFor(1);
     }
-    await waitFor(2);
+    await waitFor(1);
     const articles = document.querySelectorAll("article");
     const article = articles[articles.length - 1];
     const markdown = article.querySelector(".markdown");
@@ -51,7 +51,7 @@ async function sendPrompt() {
 
 socket.onmessage = async (ev) => {
     insertPrompt(ev.data);
-    await waitFor(2);
+    await waitFor(1);
     const promptResponse = await sendPrompt();
     socket.send(promptResponse);
 };
@@ -61,7 +61,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     if (request.action === "insertAndSendPrompt") {
         insertPrompt(request.data);
         (async function () {
-            await waitFor(2);
+            await waitFor(1);
             const promptResponse = await sendPrompt();
             socket.send(promptResponse);
             sendResponse({ result: "SUCCESS" });
