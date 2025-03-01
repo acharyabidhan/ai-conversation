@@ -35,18 +35,20 @@ function waitFor(sec) {
     return new Promise((res, rej) => { setTimeout(res, sec * 1000); });
 }
 
+let previousArticleLength = -1;
+
 async function sendPrompt() {
-    const btn = document.querySelector("button[data-testid='send-button']");
-    btn.click();
-    await waitFor(1);
-    while (document.querySelector("button[data-testid='stop-button']") !== null) {
+    if (previousArticleLength === -1)
+        previousArticleLength = document.querySelectorAll("article").length;
+    document.querySelector("button[data-testid='send-button']").click();
+    while (document.querySelectorAll("article").length - previousArticleLength < 2)
         await waitFor(1);
-    }
+    previousArticleLength = document.querySelectorAll("article").length;
+    while (document.querySelector("button[data-testid='stop-button']") !== null)
+        await waitFor(1);
     await waitFor(1);
     const articles = document.querySelectorAll("article");
-    const article = articles[articles.length - 1];
-    const markdown = article.querySelector(".markdown");
-    return markdown.textContent;
+    return articles[articles.length - 1].querySelector(".markdown").textContent;
 }
 
 socket.onmessage = async (ev) => {
